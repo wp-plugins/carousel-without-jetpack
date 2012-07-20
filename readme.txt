@@ -23,6 +23,8 @@ The carousel feature transform your standard galleries into an immersive full-sc
 
 [Learn WordPress with free WPBeginner videos](http://videos.wpbeginner.com "Checkout out WPBeginner's WordPress tutorial videos")
 
+Plugin Header Photo Credit: [Muffit](http://www.flickr.com/photos/calliope/3715986729/ "Carousel photo by Muffet's Flickr")
+
 
 == Installation ==
 
