@@ -12,9 +12,9 @@ Transform your standard galleries into an immersive full-screen experience witho
 
 == Description ==
 
-I love this Carousel feature that is part of JetPack however I didn't like that I was being forced to connect my site with WordPress.com to use a feature that has no connection with WordPress.com. Well, I simply forked the Carousel module from JetPack. I am releasing it for all those who want to use this feature with freedom of choice.
+I love this Carousel feature that is part of JetPack however I didn't like that I was being forced to connect my site with WordPress.com to use a feature that has no connection with WordPress.com. Well, I simply forked the Carousel module from JetPack. I am releasing it for all those who want to use this feature with freedom of choice.
 
-The carousel feature transform your standard galleries into an immersive full-screen experience with comments and EXIF metadata.
+The carousel feature transform your standard galleries into an immersive full-screen experience with comments and EXIF metadata.
 
 
 [Visit WPBeginner for tutorials or support](http://www.wpbeginner.com "Visit WPBeginner for any tutorials or support")
