@@ -15,7 +15,7 @@ without logging into WordPress.com because I shouldn't be forced to (that's evil
 this little plugin which is exactly the copy of JetPack module. I will update this plugin everytime that JetPack updates.
 
 */
-class Jetpack_Carousel {
+class No_Jetpack_Carousel {
 
 	var $prebuilt_widths = array( 370, 700, 1000, 1200, 1400, 2000 );
 
@@ -461,4 +461,4 @@ class Jetpack_Carousel {
 	}
 }
 
-new Jetpack_Carousel;
+new No_Jetpack_Carousel;
