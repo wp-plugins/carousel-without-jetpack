@@ -4,6 +4,7 @@
 
 .jp-carousel-overlay {
 	background: #000;
+	position: fixed!important; 
 }
 
 div.jp-carousel-buttons a.jp-carousel-permalink {

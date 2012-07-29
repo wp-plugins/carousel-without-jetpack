@@ -1,10 +1,10 @@
 === Gallery Carousel Without JetPack ===
-Contributors: smub 
+Contributors: smub, iamdpegg 
 Donate link:http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: gallery, lightbox, carousel, gallery carousel, jetpack
 Requires at least: 3.4.1
 Tested up to: 3.4.1
-Stable tag: 0.2
+Stable tag: 0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,9 +41,19 @@ Go to Settings > Media for further options.
 
 **How will you make sure to keep this upto date?**
 
-Well this code is literally a copy of JetPack module. I will keep a close eye on every JetPack update. If they update this module, then I will be sure to update this plugin as well. 
+Well this code is literally a copy of JetPack module. I will keep a close eye on every JetPack update. If they update this module, then I will be sure to update this plugin as well.
+
+**How can I get rid of the Comments?**
+
+I thought long and hard about whether to add this feature in the gallery carousel or not. Because the goal is to transform your standard galleries into an immersive full-screen experience, I think that comments are necessary. This is why I will NOT be adding an option to turn the comments off.
+
 
 == Changelog ==
+
+= 0.3 =
+* Fixed styling issue with the background going up as soon as one writes a comment (props Philipp)
+* Added translation support. (props Philipp)
+* Translated it for German. (props Philipp)
 
 = 0.2 =
 * Fixed the issue with Multisite
