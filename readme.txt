@@ -47,6 +47,10 @@ Well this code is literally a copy of JetPack module. I will keep a close eye on
 
 I thought long and hard about whether to add this feature in the gallery carousel or not. Because the goal is to transform your standard galleries into an immersive full-screen experience, I think that comments are necessary. This is why I will NOT be adding an option to turn the comments off.
 
+However, if you want to turn off comments on Media attachments, you can follow this tutorial:
+
+[How to Disable Comments on WordPress Media Attachments](http://www.wpbeginner.com/wp-tutorials/how-to-disable-comments-on-wordpress-media-attachments/ "How to Disable Comments on WordPress Media Attachments) 
+
 
 == Changelog ==
 
