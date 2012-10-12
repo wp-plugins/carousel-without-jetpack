@@ -3,7 +3,7 @@
 Plugin Name: Gallery Carousel Without JetPack
 Plugin URI: http://www.wpbeginner.com/
 Description: Transform your standard galleries into an immersive full-screen experience without requiring you to connect to WordPress.com
-Version: 0.3
+Version: 0.4
 Author: Syed Balkhi
 Author URI: http://www.wpbeginner.com
 License: GPLv2 or later
@@ -33,7 +33,7 @@ class No_Jetpack_Carousel {
 		if ( $this->maybe_disable_jp_carousel() )
 			return;
 
-		$this->in_jetpack = ( class_exists( 'Jetpack' ) && method_exists( 'Jetpack', 'enable_module_configurable' ) ) ? true : false;
+		$this->in_jetpack = ( class_exists( 'carousel' ) && method_exists( 'carousel', 'enable_module_configurable' ) ) ? true : false;
 
 		if ( is_admin() ) {
 			// Register the Carousel-related related settings
@@ -59,7 +59,7 @@ class No_Jetpack_Carousel {
 			add_filter( 'wp_get_attachment_link', array( $this, 'add_data_to_images' ), 10, 2 );
 		}
 
-		if ( $this->in_jetpack && method_exists( 'Jetpack', 'module_configuration_load' ) ) {
+		if ( $this->in_jetpack && method_exists( 'carousel', 'module_configuration_load' ) ) {
 			Jetpack::enable_module_configurable( dirname( dirname( __FILE__ ) ) . '/carousel.php' );
 			Jetpack::module_configuration_load( dirname( dirname( __FILE__ ) ) . '/carousel.php', array( $this, 'jetpack_configuration_load' ) );
 		}
@@ -79,7 +79,6 @@ class No_Jetpack_Carousel {
 	}
 
 	function enqueue_assets( $output ) {
-	
 		if ( ! empty( $output ) ) {
 			// Bail because someone is overriding the [gallery] shortcode.
 			remove_filter( 'gallery_style', array( $this, 'add_data_to_container' ) );
@@ -90,12 +89,14 @@ class No_Jetpack_Carousel {
 		do_action( 'jp_carousel_thumbnails_shown' );
 
 		if ( $this->first_run ) {
-			if ( ! has_action( 'wp_enqueue_scripts', 'register_spin_scripts' ) ) {
-				wp_enqueue_script( 'spin', plugins_url( 'spin.js', __FILE__ ), false, '1.2.4' );
-				wp_enqueue_script( 'jquery.spin', plugins_url( 'jquery.spin.js', __FILE__ ) , array( 'jquery', 'spin' ) );
+			if ( !wp_script_is( 'spin', 'registered' ) ) {
+				wp_register_script( 'spin', plugins_url( 'spin.js', __FILE__ ), false, '1.2.4' );
+			}
+			if ( !wp_script_is( 'jquery.spin', 'registered' ) ) {
+				wp_register_script( 'jquery.spin', plugins_url( 'jquery.spin.js', __FILE__ ) , array( 'jquery', 'spin' ) );
 			}
 
-			wp_enqueue_script( 'jetpack-carousel', plugins_url( 'jetpack-carousel.js', __FILE__ ), array( 'jquery' ), $this->asset_version( '20120629' ), true );
+			wp_enqueue_script( 'jetpack-carousel', plugins_url( 'jetpack-carousel.js', __FILE__ ), array( 'jquery.spin' ), $this->asset_version( '20120926' ), true );
 
 			// Note: using  home_url() instead of admin_url() for ajaxurl to be sure  to get same domain on wpcom when using mapped domains (also works on self-hosted)
 			// Also: not hardcoding path since there is no guarantee site is running on site root in self-hosted context.
@@ -109,9 +110,10 @@ class No_Jetpack_Carousel {
 				'display_exif'         => $this->test_1or0_option( get_option( 'carousel_display_exif' ), true ),
 				'display_geo'          => $this->test_1or0_option( get_option( 'carousel_display_geo' ), true ),
 				'background_color'     => $this->carousel_background_color_sanitize( get_option( 'carousel_background_color' ) ),
+				'comment'              => __( 'Comment', 'carousel' ),
 				'post_comment'         => __( 'Post Comment', 'carousel' ),
 				'loading_comments'     => __( 'Loading Comments...', 'carousel' ),
-				'download_original'    => __( 'View full size <span class="photo-size">{0}<span class="photo-size-times">&times;</span>{1}</span>', 'carousel' ),
+				'download_original'    => sprintf( __( 'View full size <span class="photo-size">%1$s<span class="photo-size-times">&times;</span>%2$s</span>', 'carousel' ), '{0}', '{1}' ),
 				'no_comment_text'      => __( 'Please be sure to submit some text with your comment.', 'carousel' ),
 				'no_comment_email'     => __( 'Please provide an email address to comment.', 'carousel' ),
 				'no_comment_author'    => __( 'Please provide your name to comment.', 'carousel' ),
@@ -150,7 +152,6 @@ class No_Jetpack_Carousel {
 		}
 
 		return $output;
-		
 	}
 
 	function add_data_to_images( $html, $attachment_id ) {
@@ -373,7 +374,7 @@ class No_Jetpack_Carousel {
 		register_setting( 'media', 'carousel_display_exif', array( $this, 'carousel_display_exif_sanitize' ) );
 
 		// No geo setting yet, need to "fuzzify" data first, for privacy
-		// add_settings_field('carousel_display_geo', __( 'Geolocation', 'jetpack' ), array( $this, 'carousel_display_geo_callback' ), 'media', 'carousel_section' );
+		// add_settings_field('carousel_display_geo', __( 'Geolocation', 'carousel' ), array( $this, 'carousel_display_geo_callback' ), 'media', 'carousel_section' );
 		// register_setting( 'media', 'carousel_display_geo', array( $this, 'carousel_display_geo_sanitize' ) );
 	}
 

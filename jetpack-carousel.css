@@ -4,12 +4,6 @@
 
 .jp-carousel-overlay {
 	background: #000;
-	position: fixed!important; 
-}
-
-div.jp-carousel-buttons a.jp-carousel-permalink {
-	background: url(./images/carousel-link.png) no-repeat;
-	background-size: 12px 32px;
 }
 
 div.jp-carousel-fadeaway {
@@ -28,20 +22,11 @@ div.jp-carousel-fadeaway {
 	background-size: 200px 126px;
 }
 
-div.jp-carousel-buttons a.jp-carousel-permalink {
-	background-position: 2px 6px;
-	margin-right:0;
-}
-
-div.jp-carousel-buttons a.jp-carousel-permalink:hover {
-	background-position: 2px -14px;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
-	div.jp-carousel-buttons a.jp-carousel-permalink {
-		background-image: url(./images/carousel-link-2x.png);
-		background-position: 2px 6px;
-	}
+@media
+only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
 	.jp-carousel-next-button span,
 	.jp-carousel-previous-button span {
 		background-image: url(./images/arrows-2x.png);
@@ -133,17 +118,19 @@ div.jp-carousel-buttons a.jp-carousel-permalink:hover {
 }
 
 .jp-carousel-buttons {
-	margin:0 0 15px 0;
-	padding-bottom:15px;
+	margin:-18px -20px 15px;
+	padding:8px 10px;
 	border-bottom:1px solid #222;
+	background: #222;
+	text-align: center;
 }
 
 div.jp-carousel-buttons a {
 	border: none !important;
 	color: #999;
-	font: normal 13px/1.2em "Helvetica Neue", sans-serif !important;
+	font: normal 11px/1.2em "Helvetica Neue", sans-serif !important;
 	letter-spacing: 0 !important;
-	padding: 5px 2px 5px 20px !important;
+	padding: 5px 2px 5px 0;
 	text-decoration: none !important;
 	text-shadow: none !important;
 	vertical-align: baseline !important;
@@ -185,8 +172,10 @@ div.jp-carousel-buttons a:hover {
 
 .jp-carousel-slide img {
 	display: block;
-	width: 100%;
-	height: 100%;
+	width: 100% !important;
+	height: 100% !important;
+	max-width: 100% !important;
+	max-height: 100% !important;
 	background: none !important;
 	border: none !important;
 	padding: 0 !important;
@@ -210,7 +199,7 @@ div.jp-carousel-buttons a:hover {
 .jp-carousel-close-hint {
 	color: #999;
 	cursor: default;
-	font: 16px/1 "Helvetica Neue", sans-serif !important;
+	font: 24px/1 "Helvetica Neue", sans-serif !important;
 	font-weight: 600 !important;
 	letter-spacing: 0 !important;
 	padding:0.55em 0 0;
@@ -254,29 +243,31 @@ div.jp-carousel-buttons a:hover {
 
 div.jp-carousel-buttons a.jp-carousel-like,
 div.jp-carousel-buttons a.jp-carousel-reblog,
+div.jp-carousel-buttons a.jp-carousel-commentlink,
 a.jp-carousel-image-download {
-	background: url(./images/carousel-sprite.png?3) no-repeat;
-	background-size: 16px 120px;
+	background: url(./images/carousel-sprite.png) no-repeat;
+	background-size: 16px 160px;
 }
 
-div.jp-carousel-buttons a.jp-carousel-reblog {
-	margin:0 5px 0 -5px !important;
+div.jp-carousel-buttons a.jp-carousel-reblog,
+div.jp-carousel-buttons a.jp-carousel-commentlink {
+	margin:0 14px 0 0 !important;
 }
 
 div.jp-carousel-buttons a.jp-carousel-reblog.reblogged,
 div.jp-carousel-buttons a.jp-carousel-like.liked {
-	background-color: #222;
+	background-color: #303030;
 	padding-right: 8px !important;
-	border-radius: 3px;
-	border-radius:3px;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	-o-border-radius:3px;
+	border-radius: 2px;
+	border-radius:2px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+	-ms-border-radius:2px;
+	-o-border-radius:2px;
 }
 
 div.jp-carousel-buttons a.jp-carousel-reblog.reblogged {
-	margin:0 5px 0 0 !important;
+	margin:0 2px 0 -12px !important;
 }
 
 
@@ -285,6 +276,11 @@ div.jp-carousel-buttons a.jp-carousel-reblog.reblogged:hover {
 	background-position: 6px -36px;
 	padding-left: 26px !important;
 	color: #999;
+}
+
+div.jp-carousel-buttons a.jp-carousel-commentlink {
+	background-position: 0px -116px;
+	padding-left: 19px !important;
 }
 
 div.jp-carousel-buttons a.jp-carousel-reblog.reblogged:hover {
@@ -312,8 +308,9 @@ only screen and (min--moz-device-pixel-ratio: 1.5),
 only screen and (min-device-pixel-ratio: 1.5) {
 	div.jp-carousel-buttons a.jp-carousel-like,
 	div.jp-carousel-buttons a.jp-carousel-reblog,
+	div.jp-carousel-buttons a.jp-carousel-commentlink,
 	a.jp-carousel-image-download {
-		background-image: url(./images/carousel-sprite-2x.png?3);
+		background-image: url(./images/carousel-sprite-2x.png);
 	}
 }
 
@@ -485,7 +482,10 @@ div#carousel-reblog-box {
 	display: none;
 }
 
-h1:before, h1:after {
+.jp-carousel-photo-info h1:before, 
+.jp-carousel-photo-info h1:after,
+.jp-carousel-left-column-wrapper h1:before,
+.jp-carousel-left-column-wrapper h1:after {
 	content:none !important;
 }
 /** Title and Desc End **/
@@ -493,12 +493,13 @@ h1:before, h1:after {
 /** Meta Box Start **/
 .jp-carousel-image-meta {
 	background: #111;
-	padding: 18px 20px;
+	border: 1px solid #222;
 	color: #fff;
 	font-size: 13px;
 	font: 12px/1.4 "Helvetica Neue", sans-serif !important;
+	overflow: hidden;
+	padding: 18px 20px;
 	width: 209px !important;
-	border: 1px solid #222;
 }
 
 .jp-carousel-image-meta li,
@@ -633,6 +634,8 @@ a.jp-carousel-image-download:hover {
 	width:auto;
 	display: inline;
 	float:none;
+	border:none;
+	margin:0;
 }
 
 .jp-carousel-comment .comment-author a {
@@ -646,6 +649,7 @@ a.jp-carousel-image-download:hover {
 .jp-carousel-comment .comment-content {
 	border:none;
 	margin-left:85px;
+	padding: 0;
 }
 
 .jp-carousel-comment .avatar {
@@ -879,7 +883,8 @@ textarea#jp-carousel-comment-form-comment-field:focus::-webkit-input-placeholder
 }
 
 .jp-carousel-light .jp-carousel-buttons {
-	border-bottom-color: #dfdfdf;
+	border-bottom-color: #f0f0f0;
+	background: #f5f5f5;
 }
 
 .jp-carousel-light div.jp-carousel-buttons a:hover {
@@ -897,6 +902,10 @@ textarea#jp-carousel-comment-form-comment-field:focus::-webkit-input-placeholder
 .jp-carousel-light div.jp-carousel-buttons a.jp-carousel-like.liked {
 	background-color: #2ea2cc;
 	color: #fff;
+}
+
+.jp-carousel-light div.jp-carousel-buttons a.jp-carousel-commentlink {
+	background-position: 0px -136px;
 }
 
 .jp-carousel-light div.jp-carousel-buttons a.jp-carousel-like,
@@ -1033,4 +1042,64 @@ textarea#jp-carousel-comment-form-comment-field:focus::-webkit-input-placeholder
 .jp-carousel-light .jp-carousel-fadeaway {
 	background: -moz-linear-gradient(bottom, rgba(255,255,255,0.75), rgba(255,255,255,0));
 	background: -webkit-gradient(linear, left bottom, left top, from(rgba(255,255,255,0.75)), to(rgba(255,255,255,0)));
+}
+
+/* Small screens */
+@media only screen and (max-width: 760px) {
+
+	.jp-carousel-info {
+		margin: 0 10px !important;
+	}
+
+	.jp-carousel-next-button, .jp-carousel-previous-button { 
+		display: none !important; 
+	}
+
+	.jp-carousel-buttons {
+		display: none !important;
+	}
+	
+	.jp-carousel-image-meta {
+		float: none !important;
+		width: 100% !important;
+		-moz-box-sizing:border-box;
+		-webkit-box-sizing:border-box;
+		box-sizing: border-box;
+	}
+	
+	.jp-carousel-close-hint {
+	 	font-weight: 800 !important;
+		font-size: 26px !important;
+		position: fixed !important;
+		top: -10px;
+	}
+	
+	.jp-carousel-slide img {
+		filter: alpha(opacity=100);
+		opacity: 1;
+	}
+	
+	.jp-carousel-wrap {
+		background-color: #000;	
+	}
+	
+	.jp-carousel-fadeaway {
+		display: none;
+	}
+	
+	#jp-carousel-comment-form-container {
+		display: none !important;
+	}
+	
+	.jp-carousel-titleanddesc {
+		padding-top: 0 !important;
+		border: none !important;
+	}
+	.jp-carousel-titleanddesc-title {
+		font-size: 1em !important;
+	}
+	
+	.jp-carousel-left-column-wrapper {
+		padding: 0;
+	}	
 }

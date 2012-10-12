@@ -3,8 +3,8 @@ Contributors: smub, iamdpegg
 Donate link:http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: gallery, lightbox, carousel, gallery carousel, jetpack
 Requires at least: 3.4.1
-Tested up to: 3.4.1
-Stable tag: 0.3
+Tested up to: 3.5 beta
+Stable tag: 0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,12 @@ However, if you want to turn off comments on Media attachments, you can follow t
 
 
 == Changelog ==
+
+= 0.4 =
+* Updated it to match with the original JetPack plugin updates.
+* Added support for mobile and touchscreen devices.
+* Increased the size of the close button as many of you requested in the forums.
+
 
 = 0.3 =
 * Fixed styling issue with the background going up as soon as one writes a comment (props Philipp)
