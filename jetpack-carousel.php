@@ -3,7 +3,7 @@
 Plugin Name: Gallery Carousel Without JetPack
 Plugin URI: http://www.wpbeginner.com/
 Description: Transform your standard galleries into an immersive full-screen experience without requiring you to connect to WordPress.com
-Version: 0.4
+Version: 0.5
 Author: Syed Balkhi
 Author URI: http://www.wpbeginner.com
 License: GPLv2 or later
@@ -13,8 +13,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Note: This is a fork of Carousel Module from JetPack. I just wanted the Carousel to work
 without logging into WordPress.com because I shouldn't be forced to (that's evil). So I'm releasing
 this little plugin which is exactly the copy of JetPack module. I will update this plugin everytime that JetPack updates.
-
 */
+
 load_plugin_textdomain('carousel', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 class No_Jetpack_Carousel {
@@ -33,7 +33,7 @@ class No_Jetpack_Carousel {
 		if ( $this->maybe_disable_jp_carousel() )
 			return;
 
-		$this->in_jetpack = ( class_exists( 'carousel' ) && method_exists( 'carousel', 'enable_module_configurable' ) ) ? true : false;
+		$this->in_jetpack = ( class_exists( 'Jetpack' ) && method_exists( 'Jetpack', 'enable_module_configurable' ) ) ? true : false;
 
 		if ( is_admin() ) {
 			// Register the Carousel-related related settings
@@ -59,7 +59,7 @@ class No_Jetpack_Carousel {
 			add_filter( 'wp_get_attachment_link', array( $this, 'add_data_to_images' ), 10, 2 );
 		}
 
-		if ( $this->in_jetpack && method_exists( 'carousel', 'module_configuration_load' ) ) {
+		if ( $this->in_jetpack && method_exists( 'Jetpack', 'module_configuration_load' ) ) {
 			Jetpack::enable_module_configurable( dirname( dirname( __FILE__ ) ) . '/carousel.php' );
 			Jetpack::module_configuration_load( dirname( dirname( __FILE__ ) ) . '/carousel.php', array( $this, 'jetpack_configuration_load' ) );
 		}
@@ -79,7 +79,7 @@ class No_Jetpack_Carousel {
 	}
 
 	function enqueue_assets( $output ) {
-		if ( ! empty( $output ) ) {
+		if ( ! empty( $output ) && ! apply_filters( 'jp_carousel_force_enable', false ) ) {
 			// Bail because someone is overriding the [gallery] shortcode.
 			remove_filter( 'gallery_style', array( $this, 'add_data_to_container' ) );
 			remove_filter( 'wp_get_attachment_link', array( $this, 'add_data_to_images' ) );
@@ -89,14 +89,7 @@ class No_Jetpack_Carousel {
 		do_action( 'jp_carousel_thumbnails_shown' );
 
 		if ( $this->first_run ) {
-			if ( !wp_script_is( 'spin', 'registered' ) ) {
-				wp_register_script( 'spin', plugins_url( 'spin.js', __FILE__ ), false, '1.2.4' );
-			}
-			if ( !wp_script_is( 'jquery.spin', 'registered' ) ) {
-				wp_register_script( 'jquery.spin', plugins_url( 'jquery.spin.js', __FILE__ ) , array( 'jquery', 'spin' ) );
-			}
-
-			wp_enqueue_script( 'jetpack-carousel', plugins_url( 'jetpack-carousel.js', __FILE__ ), array( 'jquery.spin' ), $this->asset_version( '20120926' ), true );
+			wp_enqueue_script( 'jetpack-carousel', plugins_url( 'jetpack-carousel.js', __FILE__ ), array( 'jquery' ), $this->asset_version( '20130109' ), true );
 
 			// Note: using  home_url() instead of admin_url() for ajaxurl to be sure  to get same domain on wpcom when using mapped domains (also works on self-hosted)
 			// Also: not hardcoding path since there is no guarantee site is running on site root in self-hosted context.
@@ -110,34 +103,34 @@ class No_Jetpack_Carousel {
 				'display_exif'         => $this->test_1or0_option( get_option( 'carousel_display_exif' ), true ),
 				'display_geo'          => $this->test_1or0_option( get_option( 'carousel_display_geo' ), true ),
 				'background_color'     => $this->carousel_background_color_sanitize( get_option( 'carousel_background_color' ) ),
-				'comment'              => __( 'Comment', 'carousel' ),
-				'post_comment'         => __( 'Post Comment', 'carousel' ),
-				'loading_comments'     => __( 'Loading Comments...', 'carousel' ),
-				'download_original'    => sprintf( __( 'View full size <span class="photo-size">%1$s<span class="photo-size-times">&times;</span>%2$s</span>', 'carousel' ), '{0}', '{1}' ),
-				'no_comment_text'      => __( 'Please be sure to submit some text with your comment.', 'carousel' ),
-				'no_comment_email'     => __( 'Please provide an email address to comment.', 'carousel' ),
-				'no_comment_author'    => __( 'Please provide your name to comment.', 'carousel' ),
-				'comment_post_error'   => __( 'Sorry, but there was an error posting your comment. Please try again later.', 'carousel' ),
-				'comment_approved'     => __( 'Your comment was approved.', 'carousel' ),
-				'comment_unapproved'   => __( 'Your comment is in moderation.', 'carousel' ),
-				'camera'               => __( 'Camera', 'carousel' ),
-				'aperture'             => __( 'Aperture', 'carousel' ),
-				'shutter_speed'        => __( 'Shutter Speed', 'carousel' ),
-				'focal_length'         => __( 'Focal Length', 'carousel' ),
+				'comment'              => __( 'Comment', 'jetpack' ),
+				'post_comment'         => __( 'Post Comment', 'jetpack' ),
+				'loading_comments'     => __( 'Loading Comments...', 'jetpack' ),
+				'download_original'    => sprintf( __( 'View full size <span class="photo-size">%1$s<span class="photo-size-times">&times;</span>%2$s</span>', 'jetpack' ), '{0}', '{1}' ),
+				'no_comment_text'      => __( 'Please be sure to submit some text with your comment.', 'jetpack' ),
+				'no_comment_email'     => __( 'Please provide an email address to comment.', 'jetpack' ),
+				'no_comment_author'    => __( 'Please provide your name to comment.', 'jetpack' ),
+				'comment_post_error'   => __( 'Sorry, but there was an error posting your comment. Please try again later.', 'jetpack' ),
+				'comment_approved'     => __( 'Your comment was approved.', 'jetpack' ),
+				'comment_unapproved'   => __( 'Your comment is in moderation.', 'jetpack' ),
+				'camera'               => __( 'Camera', 'jetpack' ),
+				'aperture'             => __( 'Aperture', 'jetpack' ),
+				'shutter_speed'        => __( 'Shutter Speed', 'jetpack' ),
+				'focal_length'         => __( 'Focal Length', 'jetpack' ),
 			);
 
 			if ( ! isset( $localize_strings['jetpack_comments_iframe_src'] ) || empty( $localize_strings['jetpack_comments_iframe_src'] ) ) {
 				// We're not using Jetpack comments after all, so fallback to standard local comments.
 
 				if ( $is_logged_in ) {
-					$localize_strings['local_comments_commenting_as'] = '<p id="jp-carousel-commenting-as">' . sprintf( __( 'Commenting as %s', 'carousel' ), $current_user->data->display_name ) . '</p>';
+					$localize_strings['local_comments_commenting_as'] = '<p id="jp-carousel-commenting-as">' . sprintf( __( 'Commenting as %s', 'jetpack' ), $current_user->data->display_name ) . '</p>';
 				} else {
 					$localize_strings['local_comments_commenting_as'] = ''
-						. '<fieldset><label for="email">' . __( 'Email (Required)', 'carousel' ) . '</label> '
+						. '<fieldset><label for="email">' . __( 'Email (Required)', 'jetpack' ) . '</label> '
 						. '<input type="text" name="email" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-email-field" /></fieldset>'
-						. '<fieldset><label for="author">' . __( 'Name (Required)', 'carousel' ) . '</label> '
+						. '<fieldset><label for="author">' . __( 'Name (Required)', 'jetpack' ) . '</label> '
 						. '<input type="text" name="author" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-author-field" /></fieldset>'
-						. '<fieldset><label for="url">' . __( 'Website', 'carousel' ) . '</label> '
+						. '<fieldset><label for="url">' . __( 'Website', 'jetpack' ) . '</label> '
 						. '<input type="text" name="url" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-url-field" /></fieldset>';
 				}
 			}
@@ -145,7 +138,14 @@ class No_Jetpack_Carousel {
 			$localize_strings = apply_filters( 'jp_carousel_localize_strings', $localize_strings );
 			wp_localize_script( 'jetpack-carousel', 'jetpackCarouselStrings', $localize_strings );
 			wp_enqueue_style( 'jetpack-carousel', plugins_url( 'jetpack-carousel.css', __FILE__ ), array(), $this->asset_version( '20120629' ) );
-
+			global $is_IE;
+			if( $is_IE )
+			{
+				$msie = strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE' ) + 4;
+				$version = (float) substr( $_SERVER['HTTP_USER_AGENT'], $msie, strpos( $_SERVER['HTTP_USER_AGENT'], ';', $msie ) - $msie );
+				if( $version < 9 )
+					wp_enqueue_style( 'jetpack-carousel-ie8fix', plugins_url( 'jetpack-carousel-ie8fix.css', __FILE__ ), array(), $this->asset_version( '20121024' ) );
+			}
 			do_action( 'jp_carousel_enqueue_assets', $this->first_run, $localize_strings );
 
 			$this->first_run = false;
@@ -159,10 +159,11 @@ class No_Jetpack_Carousel {
 			return $html;
 
 		$attachment_id   = intval( $attachment_id );
-		$orig_file       = wp_get_attachment_url( $attachment_id );
+		$orig_file       = wp_get_attachment_image_src( $attachment_id, 'full' );
+		$orig_file       = isset( $orig_file[0] ) ? $orig_file[0] : wp_get_attachment_url( $attachment_id );
 		$meta            = wp_get_attachment_metadata( $attachment_id );
 		$size            = isset( $meta['width'] ) ? intval( $meta['width'] ) . ',' . intval( $meta['height'] ) : '';
-		$img_meta        = $meta['image_meta'];
+		$img_meta        = ( ! empty( $meta['image_meta'] ) ) ? (array) $meta['image_meta'] : array();
 		$comments_opened = intval( comments_open( $attachment_id ) );
 
 		/*
@@ -172,10 +173,10 @@ class No_Jetpack_Carousel {
 		 * $content_width has no filter we could temporarily de-register, run wp_get_attachment_image_src(), then
 		 * re-register. So using returned file URL instead, which we can define the sizes from through filename
 		 * parsing in the JS, as this is a failsafe file reference.
-		 * 
+		 *
 		 * EG with Twenty Eleven activated:
 		 * array(4) { [0]=> string(82) "http://vanillawpinstall.blah/wp-content/uploads/2012/06/IMG_3534-1024x764.jpg" [1]=> int(584) [2]=> int(435) [3]=> bool(true) }
-		 * 
+		 *
 		 * EG with Twenty Ten activated:
 		 * array(4) { [0]=> string(82) "http://vanillawpinstall.blah/wp-content/uploads/2012/06/IMG_3534-1024x764.jpg" [1]=> int(640) [2]=> int(477) [3]=> bool(true) }
 		 */
@@ -183,11 +184,12 @@ class No_Jetpack_Carousel {
 		$medium_file_info = wp_get_attachment_image_src( $attachment_id, 'medium' );
 		$medium_file      = isset( $medium_file_info[0] ) ? $medium_file_info[0] : '';
 
-		$large_file_info = wp_get_attachment_image_src( $attachment_id, 'large' );
-		$large_file      = isset( $large_file_info[0] ) ? $large_file_info[0] : '';
+		$large_file_info  = wp_get_attachment_image_src( $attachment_id, 'large' );
+		$large_file       = isset( $large_file_info[0] ) ? $large_file_info[0] : '';
 
-		$attachment      = get_post( $attachment_id );
-		$attachment_desc = wpautop( wptexturize( $attachment->post_content ) );
+		$attachment       = get_post( $attachment_id );
+		$attachment_title = wptexturize( $attachment->post_title );
+		$attachment_desc  = wpautop( wptexturize( $attachment->post_content ) );
 
 		// Not yet providing geo-data, need to "fuzzify" for privacy
 		if ( ! empty( $img_meta ) ) {
@@ -197,17 +199,18 @@ class No_Jetpack_Carousel {
 			}
 		}
 
-		$img_meta = json_encode( $img_meta );
+		$img_meta = json_encode( array_map( 'strval', $img_meta ) );
 
 		$html = str_replace(
 			'<img ',
 			sprintf(
-				'<img data-attachment-id="%1$d" data-orig-file="%2$s" data-orig-size="%3$s" data-comments-opened="%4$s" data-image-meta="%5$s" data-image-description="%6$s" data-medium-file="%7$s" data-large-file="%8$s" ',
+				'<img data-attachment-id="%1$d" data-orig-file="%2$s" data-orig-size="%3$s" data-comments-opened="%4$s" data-image-meta="%5$s" data-image-title="%6$s" data-image-description="%7$s" data-medium-file="%8$s" data-large-file="%9$s" ',
 				$attachment_id,
 				esc_attr( $orig_file ),
 				$size,
 				$comments_opened,
 				esc_attr( $img_meta ),
+				esc_attr( $attachment_title ),
 				esc_attr( $attachment_desc ),
 				esc_attr( $medium_file ),
 				esc_attr( $large_file )
@@ -235,24 +238,24 @@ class No_Jetpack_Carousel {
 
 		return $html;
 	}
-	
+
 	function get_attachment_comments() {
 		if ( ! headers_sent() )
 			header('Content-type: text/javascript');
-		
+
 		do_action('jp_carousel_check_blog_user_privileges');
-		
+
 		$attachment_id = ( isset( $_REQUEST['id'] ) ) ? (int) $_REQUEST['id'] : 0;
 		$offset        = ( isset( $_REQUEST['offset'] ) ) ? (int) $_REQUEST['offset'] : 0;
-		
+
 		if ( ! $attachment_id ) {
-			echo json_encode( __( 'Missing attachment ID.', 'carousel' ) );
+			echo json_encode( __( 'Missing attachment ID.', 'jetpack' ) );
 			die();
 		}
-		
+
 		if ( $offset < 1 )
 			$offset = 0;
-		
+
 		$comments = get_comments( array(
 			'status'  => 'approve',
 			'order'   => ( 'asc' == get_option('comment_order') ) ? 'ASC' : 'DESC',
@@ -260,9 +263,9 @@ class No_Jetpack_Carousel {
 			'offset'  => $offset,
 			'post_id' => $attachment_id,
 		) );
-		
+
 		$out      = array();
-		
+
 		// Can't just send the results, they contain the commenter's email address.
 		foreach ( $comments as $comment ) {
 			$author_markup   = '<a href="' . esc_url( $comment->comment_author_url ) . '">' . esc_html( $comment->comment_author ) . '</a>';
@@ -275,42 +278,42 @@ class No_Jetpack_Carousel {
 				'content'         => wpautop($comment->comment_content),
 			);
 		}
-		
+
 		die( json_encode( $out ) );
 	}
 
 	function post_attachment_comment() {
 		if ( ! headers_sent() )
 			header('Content-type: text/javascript');
-		
+
 		if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce($_POST['nonce'], 'carousel_nonce') )
-			die( json_encode( array( 'error' => __( 'Nonce verification failed.', 'carousel' ) ) ) );
-		
+			die( json_encode( array( 'error' => __( 'Nonce verification failed.', 'jetpack' ) ) ) );
+
 		$_blog_id = (int) $_POST['blog_id'];
 		$_post_id = (int) $_POST['id'];
 		$comment = $_POST['comment'];
-		
+
 		if ( empty( $_blog_id ) )
-			die( json_encode( array( 'error' => __( 'Missing target blog ID.', 'carousel' ) ) ) );
-		
+			die( json_encode( array( 'error' => __( 'Missing target blog ID.', 'jetpack' ) ) ) );
+
 		if ( empty( $_post_id ) )
-			die( json_encode( array( 'error' => __( 'Missing target post ID.', 'carousel' ) ) ) );
-		
+			die( json_encode( array( 'error' => __( 'Missing target post ID.', 'jetpack' ) ) ) );
+
 		if ( empty( $comment ) )
-			die( json_encode( array( 'error' => __( 'No comment text was submitted.', 'carousel' ) ) ) );
+			die( json_encode( array( 'error' => __( 'No comment text was submitted.', 'jetpack' ) ) ) );
 
 		// Used in context like NewDash
 		$switched = false;
-		if ( $_blog_id != get_current_blog_id() ) {
+		if ( is_multisite() && $_blog_id != get_current_blog_id() ) {
 			switch_to_blog( $_blog_id );
 			$switched = true;
 		}
-		
+
 		do_action('jp_carousel_check_blog_user_privileges');
 
 		if ( ! comments_open( $_post_id ) )
-			die( json_encode( array( 'error' => __( 'Comments on this post are closed.', 'carousel' ) ) ) );
-		
+			die( json_encode( array( 'error' => __( 'Comments on this post are closed.', 'jetpack' ) ) ) );
+
 		if ( is_user_logged_in() ) {
 			$user         = wp_get_current_user();
 			$user_id      = $user->ID;
@@ -319,7 +322,7 @@ class No_Jetpack_Carousel {
 			$url          = $user->user_url;
 
 			if ( empty( $user_id ) )
-				die( json_encode( array( 'error' => __( 'Sorry, but we could not authenticate your request.', 'carousel' ) ) ) );
+				die( json_encode( array( 'error' => __( 'Sorry, but we could not authenticate your request.', 'jetpack' ) ) ) );
 		} else {
 			$user_id      = 0;
 			$display_name = $_POST['author'];
@@ -327,13 +330,13 @@ class No_Jetpack_Carousel {
 			$url          = $_POST['url'];
 
 			if ( empty( $display_name ) )
-				die( json_encode( array( 'error' => __( 'Please provide your name.', 'carousel' ) ) ) );
+				die( json_encode( array( 'error' => __( 'Please provide your name.', 'jetpack' ) ) ) );
 
 			if ( empty( $email ) )
-				die( json_encode( array( 'error' => __( 'Please provide an email address.', 'carousel' ) ) ) );
+				die( json_encode( array( 'error' => __( 'Please provide an email address.', 'jetpack' ) ) ) );
 
 			if ( ! is_email( $email ) )
-				die( json_encode( array( 'error' => __( 'Please provide a valid email address.', 'carousel' ) ) ) );
+				die( json_encode( array( 'error' => __( 'Please provide a valid email address.', 'jetpack' ) ) ) );
 		}
 
 		$comment_data =  array(
@@ -358,23 +361,23 @@ class No_Jetpack_Carousel {
 
 		die( json_encode( array( 'comment_id' => $comment_id, 'comment_status' => $comment_status ) ) );
 	}
-	
+
 	function register_settings() {
-		add_settings_section('carousel_section', __( 'Image Gallery Carousel', 'carousel' ), array( $this, 'carousel_section_callback' ), 'media');
-		
+		add_settings_section('carousel_section', __( 'Image Gallery Carousel', 'jetpack' ), array( $this, 'carousel_section_callback' ), 'media');
+
 		if ( ! $this->in_jetpack ) {
-			add_settings_field('carousel_enable_it', __( 'Enable carousel', 'carousel' ), array( $this, 'carousel_enable_it_callback' ), 'media', 'carousel_section' );
+			add_settings_field('carousel_enable_it', __( 'Enable carousel', 'jetpack' ), array( $this, 'carousel_enable_it_callback' ), 'media', 'carousel_section' );
 			register_setting( 'media', 'carousel_enable_it', array( $this, 'carousel_enable_it_sanitize' ) );
 		}
 
-		add_settings_field('carousel_background_color', __( 'Background color', 'carousel' ), array( $this, 'carousel_background_color_callback' ), 'media', 'carousel_section' );
+		add_settings_field('carousel_background_color', __( 'Background color', 'jetpack' ), array( $this, 'carousel_background_color_callback' ), 'media', 'carousel_section' );
 		register_setting( 'media', 'carousel_background_color', array( $this, 'carousel_background_color_sanitize' ) );
-		
-		add_settings_field('carousel_display_exif', __( 'Metadata', 'carousel'), array( $this, 'carousel_display_exif_callback' ), 'media', 'carousel_section' );
+
+		add_settings_field('carousel_display_exif', __( 'Metadata', 'jetpack'), array( $this, 'carousel_display_exif_callback' ), 'media', 'carousel_section' );
 		register_setting( 'media', 'carousel_display_exif', array( $this, 'carousel_display_exif_sanitize' ) );
 
 		// No geo setting yet, need to "fuzzify" data first, for privacy
-		// add_settings_field('carousel_display_geo', __( 'Geolocation', 'carousel' ), array( $this, 'carousel_display_geo_callback' ), 'media', 'carousel_section' );
+		// add_settings_field('carousel_display_geo', __( 'Geolocation', 'jetpack' ), array( $this, 'carousel_display_geo_callback' ), 'media', 'carousel_section' );
 		// register_setting( 'media', 'carousel_display_geo', array( $this, 'carousel_display_geo_sanitize' ) );
 	}
 
@@ -391,7 +394,7 @@ class No_Jetpack_Carousel {
 		}
 		return ( 1 == $value ) ? 1 : 0;
 	}
-	
+
 	function sanitize_1or0_option( $value ) {
 		return ( 1 == $value ) ? 1 : 0;
 	}
@@ -427,7 +430,7 @@ class No_Jetpack_Carousel {
 	}
 
 	function carousel_display_exif_callback() {
-		$this->settings_checkbox( 'carousel_display_exif', __( 'Show photo metadata (<a href="http://en.wikipedia.org/wiki/Exchangeable_image_file_format" target="_blank">Exif</a>) in carousel, when available.', 'carousel' ) );
+		$this->settings_checkbox( 'carousel_display_exif', __( 'Show photo metadata (<a href="http://en.wikipedia.org/wiki/Exchangeable_image_file_format" target="_blank">Exif</a>) in carousel, when available.', 'jetpack' ) );
 	}
 
 	function carousel_display_exif_sanitize( $value ) {
@@ -435,15 +438,15 @@ class No_Jetpack_Carousel {
 	}
 
 	function carousel_display_geo_callback() {
-		$this->settings_checkbox( 'carousel_display_geo', __( 'Show map of photo location in carousel, when available.', 'carousel' ) );
+		$this->settings_checkbox( 'carousel_display_geo', __( 'Show map of photo location in carousel, when available.', 'jetpack' ) );
 	}
 
 	function carousel_display_geo_sanitize( $value ) {
 		return $this->sanitize_1or0_option( $value );
-	} 
+	}
 
 	function carousel_background_color_callback() {
-		$this->settings_select( 'carousel_background_color', array( 'black' => __( 'Black', 'carousel' ), 'white' => __( 'White', 'carousel', 'carousel' ) ) );
+		$this->settings_select( 'carousel_background_color', array( 'black' => __( 'Black', 'jetpack' ), 'white' => __( 'White', 'jetpack', 'jetpack' ) ) );
 	}
 
 	function carousel_background_color_sanitize( $value ) {
@@ -451,7 +454,7 @@ class No_Jetpack_Carousel {
 	}
 
 	function carousel_enable_it_callback() {
-		$this->settings_checkbox( 'carousel_enable_it', __( 'Display images in full-size carousel slideshow.', 'carousel' ) );
+		$this->settings_checkbox( 'carousel_enable_it', __( 'Display images in full-size carousel slideshow.', 'jetpack' ) );
 	}
 
 	function carousel_enable_it_sanitize( $value ) {
