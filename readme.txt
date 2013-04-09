@@ -26,6 +26,7 @@ I often get asked what are the [best WordPress plugins](http://www.wpbeginner.co
 
 Gallery Carousel feature was first intorduced for WordPress.com blogs, and now it is available for all WordPress sites. So YES you can [switch from WordPress.com to WordPress.org](http://www.wpbeginner.com/wp-tutorials/how-to-properly-move-your-blog-from-wordpress-com-to-wordpress-org/ "switch from WordPress.com to WordPress.org") and still keep the Gallery Carousel functionality by using this plugin.
 
+If you like this plugin, then please leave a good rating. For support just ask the questions here.
 
 Lastly, if you like this plugin then follow WPBeginner on [Twitter](http://twitter.com/wpbeginner "Twitter"), [Facebook](http://facebook.com/wpbeginner "Facebook"), and [Google+](https://plus.google.com/101634180904808003404/ "Google+")
 
