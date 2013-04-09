@@ -57,7 +57,7 @@ I thought long and hard about whether to add this feature in the gallery carouse
 
 However, if you want to turn off comments on Media attachments, you can follow this tutorial:
 
-[How to Disable Comments on WordPress Media Attachments](http://www.wpbeginner.com/wp-tutorials/how-to-disable-comments-on-wordpress-media-attachments/ "How to Disable Comments on WordPress Media Attachments) 
+[How to Disable Comments on WordPress Media Attachments](http://www.wpbeginner.com/wp-tutorials/how-to-disable-comments-on-wordpress-media-attachments/ "How to Disable Comments on WordPress Media Attachments") 
 
 
 == Changelog ==
