@@ -1,10 +1,10 @@
 === Gallery Carousel Without JetPack ===
-Contributors: smub, iamdpegg 
+Contributors: smub, iamdpegg, n7studios
 Donate link:http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: gallery, lightbox, carousel, gallery carousel, jetpack
 Requires at least: 3.4.1
-Tested up to: 3.5.1
-Stable tag: 0.6
+Tested up to: 3.9
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,9 @@ However, if you want to turn off comments on Media attachments, you can follow t
 
 
 == Changelog ==
+
+= 0.7 =
+* Updated it to match original JetPack plugin updates from 2.9.3
 
 = 0.6 =
 * Updated it to match original JetPack plugin updates 2.2.2
