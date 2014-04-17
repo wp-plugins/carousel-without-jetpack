@@ -218,7 +218,7 @@ class No_Jetpack_Carousel {
 			if ( defined( 'IS_WPCOM' ) && IS_WPCOM ) {
 				$likes_blog_id = $blog_id;
 			} else {
-				$likes_blog_id = Jetpack_Options::get_option( 'id' );
+				$likes_blog_id = No_Jetpack_Options::get_option( 'id' );
 			}
 
 			$extra_data = array(

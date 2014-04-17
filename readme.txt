@@ -63,6 +63,9 @@ However, if you want to turn off comments on Media attachments, you can follow t
 
 == Changelog ==
 
+= 0.7.1 =
+* Prevent conflict where Jetpack or Slim Jetpack is already active
+
 = 0.7 =
 * Updated it to match original JetPack plugin updates from 2.9.3
 

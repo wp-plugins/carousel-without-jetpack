@@ -1,6 +1,6 @@
 <?php
 
-class Jetpack_Options {
+class No_Jetpack_Options {
 
 	public static function get_option_names( $type = 'compact' ) {
 		switch ( $type ) {
