@@ -1,5 +1,5 @@
 === Gallery Carousel Without JetPack ===
-Contributors: wpbeginner, smub, iamdpegg, n7studios
+Contributors: WPbeginner, smub, iamdpegg, n7studios
 Donate link:http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: gallery, lightbox, carousel, gallery carousel, jetpack, image gallery, wordpress gallery plugin, wordpress image gallery plugin, responsive gallery
 Requires at least: 3.4.1
